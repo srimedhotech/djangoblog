@@ -63,5 +63,111 @@ so the structure is now myblog_root/myblogproject
        If no errors then 
     * ***python manage.py migrate***
 
-10.
+10. Now Let us run the server and check if we are getting the Hello text (python manage.py runserver)and open http://127.0.0.1:8000
+11. Now we need to create a model to hold our blog information
+12. Our blog information is stored in a class named Article which will have the title, content and status (active or not)
+13. Now go to models.py and add the below code
+    ```
+    class Article(models.Model):
+        title = models.CharField(max_length=120)
+        content = models.TextField()
+        active = models.BooleanField(default=True)
+    ```
 
+14. Next step is to create a base.html in the myblogproject. Create a folder called templates within myblogproject and create new file called base.html. So the structure should now look like myblogproject/templates/base.html
+15. Now go to settings.py and in the DIRS of TEMPLATES add 'myblogproject/templates' path. After adding it should look like this.
+    'DIRS': [os.path.join(BASE_DIR, 'myblogproject/templates') ],
+16. Open base.html add the below code
+    ```
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h1>Welcome to my blog world</h1>
+        {% block content %}
+
+        {% endblock %}
+    </body>
+    </html>
+    ```
+17. Now go to myblog/views.py and modify the content of home function as below
+    ```
+    def home(request):
+        render (request, 'base.html', {})
+    ```
+18.  Now I modify the base.html content add little bit of css and menu
+
+    ```
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Welcome</title>
+        <style>
+            #topmenu li{
+                display: inline-block;
+                width: 120px;
+                text-decoration: none;
+                text-align: center;
+                margin-left: 20px;
+                padding: 5px;
+                background-color: #117;
+            }
+
+            #topmenu li a{
+                text-decoration: none;
+                color: white
+            }
+            .centerIt{
+                text-align: center
+            }
+            body{
+                background-color: #1c7cdd
+            }
+        </style>
+
+    </head>
+    <body>
+        <h1 class="centerIt">Welcome to my blog world</h1>
+        <div id="topmenu" class="centerIt">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/articles/">Blogs</a></li>
+                <li><a href="/add/">Add Blog</a></li>
+            </ul>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+    </body>
+    </html>
+    
+    ```
+
+19. Now you see 3 menu items (Home, Blogs and Add Blog)
+20. First let us implement add blog functionality to add it to the database
+21. Create a new file called forms.py in myblog/
+22. Open the forms.py and let us add a class with name BlogForm inherited from forms.ModelForm. See below
+    ```
+    from django import forms
+    from .models import Article
+
+    class BlogForm(forms.ModelForm):
+
+        class Meta:
+            model = Article
+            fields = '__all__'
+    ```
+    what we are doing here is telling the class which model it has to refer for the fields and to consider all fields (as shown in meta)
+23. 
+
+
+    
+    
