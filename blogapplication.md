@@ -369,11 +369,11 @@ so the structure is now myblog_root/myblogproject
     Step2 :  ***path('<int:id>', ArticleDetailView.as_view(), name = 'article-detail'),***
     
 48. That's it. Now navigate to http://127.0.0.1:8000/articles and select the one with link, you will see the URL as
-http://127.0.0.1:8000/articles/1 or http://127.0.0.1:8000/articles<5> like that. Now you will see the details of the article/blog
+http://127.0.0.1:8000/articles/1 or http://127.0.0.1:8000/articles/5 like that. Now you will see the details of the article/blog
 
 ### Admin related changes
 1. open myblog/admin.py
 2. Import the model by adding this line of code ***from myblog.models import Article***
 3. Register your model by adding this line of code ***admin.site.register(Article)***
 4. Now navigate to http://127.0.0.1:8000/admin and from the backend also you can add new articles
-5. You can make some of them inactive and observed the deactivated one, having no link to it.
+5. You can make some of them inactive and observed the deactivated one is striked off.
