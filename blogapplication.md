@@ -152,7 +152,7 @@ so the structure is now myblog_root/myblogproject
     ```
 
 19. Now you see 3 menu items (Home, Blogs and Add Blog)
-20. First let us implement add blog functionality to add it to the database
+20. First let us implement add blog functionality to add the blog (or Article) to the database
 21. Create a new file called forms.py in myblog/
 22. Open the forms.py and let us add a class with name BlogForm inherited from forms.ModelForm. See below
     ```
@@ -166,8 +166,36 @@ so the structure is now myblog_root/myblogproject
             fields = '__all__'
     ```
     what we are doing here is telling the class which model it has to refer for the fields and to consider all fields (as shown in meta)
-23. 
+23. Now go to myblogproject/urls.py to add the below entry in the urlpatterns
+    path('articles/', include('myblog.urls')),
+24. Now go to myblog/urls.py and add the below entry in the urlpatterns
+    path('add/', views.addarticle, name='add_article'),
+25. The above steps to ensure that when we click on the link "add blog", we get navigated to 'http://127.0.0.1/articles/add'
+26. Next natural step is to handle this request in the views.py. Let us switch now to views.py add a function with name "add". Please note that we need to have a template to show the form to add the article.
+27. So now go to myblog and add a folder with name 'templates' and inside that create one more folder with name 'articles'
+28. Now create a file called add_article.html and add the content
+    ```
+    {% extends 'base.html' %}
+    {% block content %}
+    <h1>Add a Blog</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <button type="submit">Add Blog</button>
+    </form>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% endblock %}
+    ```
+29. What we did above step is created a form and added a button. The messages are displayed using messages feature of Django
+30. Now open views.py add the below code
 
 
-    
-    
