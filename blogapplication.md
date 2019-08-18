@@ -274,7 +274,8 @@ so the structure is now myblog_root/myblogproject
     from .models import Article
 
     #step2 - Create a class derived from ListView
-    #within the class, we need to have the template name and queryset i.e. from where we need to get the list of objects.
+    #within the class, we need to have the template name and queryset i.e. 
+    #from where we need to get the list of objects.
     class ArticleListView (ListView):
         template_name = 'articles/article_list.html'
         queryset = Article.objects.all()
@@ -338,7 +339,7 @@ so the structure is now myblog_root/myblogproject
     ```
     The ***object*** that is used above is taken from the class inhertied from detail view 
     
- 46. Now go to views.py 
+ 46. Now go to ***myblog/views.py*** 
       ```
      At the top import DetailView as well
      from django.views.generic import (
@@ -357,7 +358,7 @@ so the structure is now myblog_root/myblogproject
     ```
     
 47. Now go to myblogs/urls.py - import the ArticleDetailView and modify path
-    Step1 : from .views import ArticleListView, **ArticleDetailView*** 
+    Step1 : from .views import ArticleListView, ***ArticleDetailView*** 
     Step2 :  ***path('<int:id>', ArticleDetailView.as_view(), name = 'article-detail'),***
     
 48. That's it. Now navigate to http://127.0.0.1:8000/articles and select the one with link, you will see the URL as
@@ -365,9 +366,7 @@ http://127.0.0.1:8000/articles/1 or http://127.0.0.1:8000/articles<5> like that.
 
 ### Admin related changes
 1. open myblog/admin.py
-2. Import the model
-- from myblog.models import Article
-3. Register your model
-- admin.site.register(Article)
+2. Import the model by adding this line of code ***from myblog.models import Article***
+3. Register your model by adding this line of code ***admin.site.register(Article)***
 4. Now navigate to http://127.0.0.1:8000/admin and from the backend also you can add new articles
 5. You can make some of them inactive and observed the deactivated one, having no link to it.
