@@ -129,7 +129,14 @@ so the structure is now myblog_root/myblogproject
                 text-align: center
             }
             body{
-                background-color: #1c7cdd
+                background-color: #1c7cdd;
+                font-size: 20px;
+                color: white;;
+            }
+            .inactive{
+                color: rgb(170, 152, 152);
+                text-decoration: line-through;
+                width : 150px;
             }
         </style>
 
