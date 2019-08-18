@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <h3>Full List of Articles</h3>
+    <ul>
+    {% for item in object_list %}
+        {% if item.active %}
+        <li><a href="/articles/{{item.id}}">{{ item.title}}</a> </li>
+        {% else %}
+        <li class='inactive'><a href="/articles/{{item.id}}">{{ item.title}}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+{% endblock %}

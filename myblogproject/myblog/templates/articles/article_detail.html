@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="centerIt">
+    <h1>Your Article Information details</h1>
+    
+    <hr>
+    
+    <h2>{{ object.title}}</h2>
+    {% if object.active %}
+    <p>Status: Active</p>
+    {% else %}
+    <p>Status: Not Active</p>
+    {% endif %}
+    
+    <p>{{ object.content}}></p>
+</div>
+    
+{% endblock %}

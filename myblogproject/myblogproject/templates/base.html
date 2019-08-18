@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome</title>
+    <style>
+        #topmenu li{
+            display: inline-block;
+            width: 120px;
+            text-decoration: none;
+            text-align: center;
+            margin-left: 20px;
+            padding: 5px;
+            background-color: #117;
+        }
+
+        #topmenu li a{
+            text-decoration: none;
+            color: white
+        }
+        .centerIt{
+            text-align: center
+        }
+        body{
+            background-color: #1c7cdd;
+            font-size: 20px;
+            color: white;;
+        }
+        .inactive{
+            color: rgb(170, 152, 152);
+            text-decoration: line-through;
+            width : 150px;
+        }
+    </style>
+
+</head>
+<body>
+    <h1 class="centerIt">Welcome to my blog world</h1>
+    <div id="topmenu" class="centerIt">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/articles/">Blogs</a></li>
+            <li><a href="/articles/add/">Add Blog</a></li>
+            <li><a href="/admin/" target="_blank">Admin</a></li>
+        </ul>
+    </div>
+    <hr>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>
