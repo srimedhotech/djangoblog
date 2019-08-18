@@ -100,7 +100,7 @@ so the structure is now myblog_root/myblogproject
     def home(request):
         render (request, 'base.html', {})
     ```
-18.  Now I modify the base.html content add little bit of css and menu
+18.  Now I modify the ***base.html*** content add little bit of css and menu
 
     ```
     <!DOCTYPE html>
@@ -151,10 +151,10 @@ so the structure is now myblog_root/myblogproject
     
     ```
 
-19. Now you see 3 menu items (Home, Blogs and Add Blog)
+19. Now you see 3 menu items ***(Home, Blogs and Add Blog)***
 20. First let us implement add blog functionality to add the blog (or Article) to the database
-21. Create a new file called forms.py in myblog/
-22. Open the forms.py and let us add a class with name BlogForm inherited from forms.ModelForm. See below
+21. Create a new file called ***forms.py in myblog/***
+22. Open the forms.py and let us add a class with name ***BlogForm*** inherited from ***forms.ModelForm***. See below
     ```
     from django import forms
     from .models import Article
@@ -167,13 +167,13 @@ so the structure is now myblog_root/myblogproject
     ```
     what we are doing here is telling the class which model it has to refer for the fields and to consider all fields (as shown in meta)
 23. Now go to myblogproject/urls.py to add the below entry in the urlpatterns
-    path('articles/', include('myblog.urls')),
+    ***path('articles/', include('myblog.urls')),***
 24. Now go to myblog/urls.py and add the below entry in the urlpatterns
-    path('add/', views.addarticle, name='add_article'),
-25. The above steps to ensure that when we click on the link "add blog", we get navigated to 'http://127.0.0.1/articles/add'
+    ***path('add/', views.addarticle, name='add_article'),***
+25. The above steps to ensure that when we click on the link ***"add blog"***, we get navigated to 'http://127.0.0.1/articles/add'
 26. Next natural step is to handle this request in the views.py. Let us switch now to views.py add a function with name "add". Please note that we need to have a template to show the form to add the article.
 27. So now go to myblog and add a folder with name 'templates' and inside that create one more folder with name 'articles'
-28. Now create a file called add_article.html and add the content
+28. Now create a file called ***add_article.html*** and add the content
     ```
     {% extends 'base.html' %}
     {% block content %}
@@ -197,5 +197,123 @@ so the structure is now myblog_root/myblogproject
     ```
 29. What we did above step is created a form and added a button. The messages are displayed using messages feature of Django
 30. Now open views.py add the below code
+    ```
+    def addarticle(request):
+        if request.method == "POST":
+            form = BlogForm(request.POST)
+            if form.is_valid():
+                art = form.save(commit=False)
+                art.save()
+                messages.info(request, "Your article {} is submitted successfully".format(art.title))
+                return redirect('/') #we will change to later to '/articles/'
+            else:
+                messages.info(request, "Error")
+                return redirect( "/")
+        else:
+            form = BlogForm()
+            return render(request, 'articles/add_article.html',  { 'form': form })
+    
+    ```
+31. Now go to the URL http://127.0.0.1:8000 and click on the link ***'Add Blog'***
+32. You should be able to see the form to fill the article
+33. I have made some style related changes to myblog/add_article.html and you can replace the entire content with the one below
+    ```
+    {% extends 'base.html' %}
 
+    {% block content %}
+        <div class="centerIt">
+            <h1 >Add a Blog</h1>
 
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p}}
+            <button type="submit">Add Blog</button>
+        </form>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        </div>
+        {% endif %}
+
+    {% endblock %}
+    ```
+34. Now it is time to show the blog added as a list at one place. To achieve this first add a template in myblog/templates with name article_list.html
+35. Add the below content in the artile_list.html. In this we show the active blogs with hyperlink and the inactive ones as normal text.
+    ```
+    {% extends 'base.html' %}
+    {% block content %}
+
+    <h1>Full List of Articles</h1>
+    <ul>
+    {% for item in object_list %}
+        {% if item.active %}
+        <li><a href="/articles/{{item.id}}">{{ item.title}}</a> </li>
+        {% else %}
+        <li class='inactive'><a href="/articles/{{item.id}}">{{ item.title}}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    {% endblock %}
+    ```
+36. To display the list, now we will make use of the ListView from generic Views
+37. Go to myblog/views.py add the below code
+    ```
+    #At the top add these lines
+    from django.shortcuts import render, redirect, get_object_or_404
+    from .forms import BlogForm
+    from django.contrib import messages
+
+    from django.views.generic import (
+        ListView,
+    )
+
+    from .models import Article
+
+    #step2 - Create a class derived from ListView
+    #within the class, we need to have the template name and queryset i.e. from where we need to get the list of objects.
+    class ArticleListView (ListView):
+        template_name = 'articles/article_list.html'
+        queryset = Article.objects.all()
+    
+    #This function is called whenever the listview is called.
+    
+    def get_context_data(self, **kwargs):
+        context = super(ArticleListView, self).get_context_data(**kwargs)
+        return context
+    ```
+38. Now we need to make use of this newly created list view
+39. To achieve this, we will go to urls.py and ensure we have the below code
+    ```    
+    from django.urls import path
+    from . import views
+    from . views import ArticleListView
+    #app_name = 'articles'
+
+    urlpatterns = [
+        #replace the original path('', views.home, name= 'home') with
+        path('', ArticleListView.as_view(), name = 'article-list'),
+        
+        path('add/', views.addarticle, name='add_article'),
+    ]
+    ```
+40. Again in the myblog/views.py add the below code
+    ```
+    #when the form is valid and success message is shown 
+    #change the line 
+    #return redirect('/') to     return redirect('/articles/')
+    
+    ```
+41. That's it, now if you submit a new article, you can see the list of articles in the page http://127.0.0.1:8000/articles. Also you can navigate directly to the URL to see the list of articles (blogs)
+
+42. Next Step is to handle the click event on the blogs where we can show the details of each article (blog)
+43. We will achieve this by using another in-built view called ***"DetailView"***
+44. To do this, let us make the changes 
+    a) create a template
+    b) create a class derived from DetailView
+    c) make an entry in the myblog/urls.py and use the class derived from DetailView
+    d) handle the url navigation in the myblog/views.py
+45) 
