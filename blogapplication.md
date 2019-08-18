@@ -339,23 +339,35 @@ so the structure is now myblog_root/myblogproject
     The ***object*** that is used above is taken from the class inhertied from detail view 
     
  46. Now go to views.py 
- 
-     ```
-         At the top import DetailView as well
-         from django.views.generic import (
-            ListView,
-            DetailView #newly added
-         )
-        #Add this class derived from DetailView
-        class ArticleDetailView (DetailView):
-            template_name = 'articles/article_detail.html'
-            model = Article
+      ```
+     At the top import DetailView as well
+     from django.views.generic import (
+        ListView,
+        DetailView #newly added
+     )
+    #Add this class derived from DetailView
+    class ArticleDetailView (DetailView):
+        template_name = 'articles/article_detail.html'
+        model = Article
+
+    def get_object(self):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Article, id=id_)
         
-        def get_object(self):
-            id_ = self.kwargs.get("id")
-            return get_object_or_404(Article, id=id_)
     ```
     
-47. Now go to myblogs/urls.py and the below in the urlpatterns
-    ***path('<int:id>', ArticleDetailView.as_view(), name = 'article-detail'),***
- 
+47. Now go to myblogs/urls.py - import the ArticleDetailView and modify path
+    Step1 : from .views import ArticleListView, **ArticleDetailView*** 
+    Step2 :  ***path('<int:id>', ArticleDetailView.as_view(), name = 'article-detail'),***
+    
+48. That's it. Now navigate to http://127.0.0.1:8000/articles and select the one with link, you will see the URL as
+http://127.0.0.1:8000/articles/1 or http://127.0.0.1:8000/articles<5> like that. Now you will see the details of the article/blog
+
+### Admin related changes
+1. open myblog/admin.py
+2. Import the model
+- from myblog.models import Article
+3. Register your model
+- admin.site.register(Article)
+4. Now navigate to http://127.0.0.1:8000/admin and from the backend also you can add new articles
+5. You can make some of them inactive and observed the deactivated one, having no link to it.
