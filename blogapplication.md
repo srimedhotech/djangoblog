@@ -312,8 +312,50 @@ so the structure is now myblog_root/myblogproject
 42. Next Step is to handle the click event on the blogs where we can show the details of each article (blog)
 43. We will achieve this by using another in-built view called ***"DetailView"***
 44. To do this, let us make the changes 
-    a) create a template
-    b) create a class derived from DetailView
-    c) make an entry in the myblog/urls.py and use the class derived from DetailView
-    d) handle the url navigation in the myblog/views.py
-45) 
+    * Create a template
+    * Create a class derived from DetailView
+    * Make an entry in the myblog/urls.py and use the class derived from DetailView
+    * Handle the url navigation in the myblog/views.py
+
+45. Go to the folder myblog/templates/articles add a new file called ***article_detail.html***
+
+    ```
+    {% extends 'base.html' %}
+
+    {% block content %}
+        <div class="centerIt">
+        <h1>Your Article Information details</h1>
+        <hr>
+        <h2>{{ object.title}}</h2>
+        {% if object.active %}
+        <p>Status: Active</p>
+        {% else %}
+        <p>Status: Not Active</p>
+        {% endif %}
+        <p>{{ object.content}}></p>
+        </div>
+    {% endblock %}
+    ```
+    The ***object*** that is used above is taken from the class inhertied from detail view 
+    
+ 46. Now go to views.py 
+ 
+     ```
+         At the top import DetailView as well
+         from django.views.generic import (
+            ListView,
+            DetailView #newly added
+         )
+        #Add this class derived from DetailView
+        class ArticleDetailView (DetailView):
+            template_name = 'articles/article_detail.html'
+            model = Article
+        
+        def get_object(self):
+            id_ = self.kwargs.get("id")
+            return get_object_or_404(Article, id=id_)
+    ```
+    
+47. Now go to myblogs/urls.py and the below in the urlpatterns
+    ***path('<int:id>', ArticleDetailView.as_view(), name = 'article-detail'),***
+ 
