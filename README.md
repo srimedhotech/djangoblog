@@ -1,7 +1,7 @@
 # django blog project
 ##To describe Generic views
 
-###Introduction
+### Introduction
 ## Generic Views 
 (Ref: from Django official Documentation) https://docs.djangoproject.com/en/2.2/topics/class-based-views/generic-display/
 
@@ -17,8 +17,6 @@ Django ships with generic views to do the following:
 * Present date-based objects in year/month/day archive pages, associated detail, and “latest” pages.
 * Allow users to create, update, and delete objects – with or without authorization.
 Taken together, these views provide easy interfaces to perform the most common tasks developers encounter.
-
-
 
 #### Views are two types
 1. Function based views - which we already know that we write the view as function
