@@ -34,4 +34,4 @@ present in the INSTALLED_APPS section of settings.py
     {% load static %} and then use that static keyword as used above ***href="{% static 'css/base.css' %}">***
 * Step 6 : That's it, refresh now and check. It works as earlier
 
-**Note: you can link other content to the images, videos, link by using the ***{% static ....%}***
+**Note:** you can link other content to the images, videos, link by using the ***{% static ....%}***
