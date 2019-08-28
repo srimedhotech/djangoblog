@@ -1,4 +1,8 @@
 # Useful Links
+
+## Fundamentals
+https://djangobook.com/mastering-django-2-book/ 
+
 ## Image uploads
 * https://wsvincent.com/django-image-uploads/ - Django File (and Image) Uploads Tutorial
 
